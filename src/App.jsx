@@ -11,26 +11,17 @@ import './App.css'
 // Try going to /login, /register, /about, /courses on the website and see how the html changes
 // based on the route.
 // You can also try going to /random and see what happens (a route that doesnt exist)\
-const PrivateWrapper = ({ auth: { isAuthenticated } }) => {
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
-};
-
 
 function App() {
-    const [isAuthenticated, setIsAuthenticated] = React.useState(false);
 
     return (
         <Router>
             <Routes>
                 <Route path="/" element={<Landing />} />
-                <Route path="/login" element={<Login auth={setIsAuthenticated}/>} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route element={<PrivateWrapper />} >
-                  <Route path="/about" element={<CreateCourse />} />
-                </Route>
-                <Route element={<PrivateWrapper />} >
-                  <Route path="/courses" element={<ShowCourses />} />
-                </Route>
+                <Route path="/courses" element={<ShowCourses />} />
+                <Route path="/about" element={<CreateCourse />} />
             </Routes>
         </Router>
     );

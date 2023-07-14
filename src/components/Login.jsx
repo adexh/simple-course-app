@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 const env = import.meta.env;
 
 /// File is incomplete. You need to add input boxes to take input for users to login.
 function Login() {
+    const navigate = useNavigate();
     const [email, setEmail] = React.useState("");
     const [pass, setPass] = React.useState("");
 
@@ -22,6 +24,7 @@ function Login() {
         alert(resp.message);
       }
       localStorage.setItem('token',resp.token);
+      navigate('/courses',{replace:true});
     }
 
     return <div>
