@@ -8,7 +8,6 @@ import ShowCourses from './components/ShowCourses';
 import './App.css'
 import { Privateroute } from "./utils/private_route";
 import { SessionContextProvider } from "./contexts/auth_context";
-SessionContextProvider
 // This file shows how you can do routing in React.
 // Try going to /login, /register, /about, /courses on the website and see how the html changes
 // based on the route.
@@ -17,15 +16,17 @@ SessionContextProvider
 function App() {
   return (
     <SessionContextProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Privateroute path="/courses" element={<ShowCourses />} />
-          <Privateroute path="/about" element={<CreateCourse />} />
-        </Routes>
-      </Router>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/logged" element={<Privateroute />}>
+              <Route path="courses" element={<ShowCourses />} />
+              <Route path="create" element={<CreateCourse />} />
+            </Route>
+          </Routes>
+        </Router>
     </SessionContextProvider>
   );
 }

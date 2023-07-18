@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSessionContext } from "../contexts/auth_context";
 const env = import.meta.env;
@@ -6,7 +6,7 @@ const env = import.meta.env;
 /// File is incomplete. You need to add input boxes to take input for users to login.
 function Login() {
     const navigate = useNavigate();
-    const [isAuthenticated, setAuthenticated] = useSessionContext();
+    const { isAuthenticated ,setAuthenticated } = useSessionContext();
     const [email, setEmail] = React.useState("");
     const [pass, setPass] = React.useState("");
 
@@ -28,18 +28,24 @@ function Login() {
           console.log(resp);
           alert(resp.message);
         }
-        resp = await resp.json();
         if(resp_status !== 201){
           console.log(resp);
           alert(resp.message);
         }
         setAuthenticated(true);
         localStorage.setItem('token',resp.token);
-        navigate('/courses',{replace:true});
+        navigate('/logged/courses',{replace:true});
       } catch (error) {
+        console.error(error);
         alert("Some Error ",error.message);
       }
     }
+    useEffect(()=>{
+      console.log(isAuthenticated);
+      if(isAuthenticated){
+        return navigate('/logged/courses',{replace:true});
+      }
+    },[])
 
     return <div>
         <h1>Login to admin dashboard</h1>

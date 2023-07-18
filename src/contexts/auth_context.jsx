@@ -1,11 +1,12 @@
 import { createContext, useContext, useState} from "react";
 
-export const SessionContext = createContext();
-export const useSessionContext = ()=> useContext(SessionContext);
+const SessionContext = createContext();
+const useSessionContext = ()=> useContext(SessionContext);
 
-export const SessionContextProvider = ({children})=>{
-  const [isAuthenticated, setAuthenticated] = useState(false);
+const SessionContextProvider = ({children})=>{
+  const [isAuthenticated, setAuthenticated] = useState({});
   return <SessionContext.Provider value={{isAuthenticated,setAuthenticated}}>
       {children}
     </SessionContext.Provider>
 }
+export {  SessionContext, useSessionContext, SessionContextProvider}

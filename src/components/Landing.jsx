@@ -9,6 +9,8 @@ function Landing() {
         <a href="/register">Register</a>
         <br/>
         <a href="/login">Login</a>
+        <br />
+        <a href="/logged/courses">Courses</a>
     </div>
 }
 
