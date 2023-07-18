@@ -1,10 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useSessionContext } from "../contexts/auth_context";
 const env = import.meta.env;
 
 /// File is incomplete. You need to add input boxes to take input for users to login.
 function Login() {
     const navigate = useNavigate();
+    const [isAuthenticated, setAuthenticated] = useSessionContext();
     const [email, setEmail] = React.useState("");
     const [pass, setPass] = React.useState("");
 
@@ -16,15 +18,27 @@ function Login() {
           "password": pass
         }
       }
-      let resp = await fetch(env.VITE_API + '/admin/login',options);
-      let resp_status = resp.status;
-      resp = await resp.json();
-      if(resp_status !== 201){
-        console.log(resp);
-        alert(resp.message);
+      let resp=null;
+      let resp_status = null;
+      try {
+        resp = await fetch(env.VITE_API + '/admin/login',options);
+        resp_status = resp.status;
+        resp = await resp.json();
+        if(resp_status !== 201){
+          console.log(resp);
+          alert(resp.message);
+        }
+        resp = await resp.json();
+        if(resp_status !== 201){
+          console.log(resp);
+          alert(resp.message);
+        }
+        setAuthenticated(true);
+        localStorage.setItem('token',resp.token);
+        navigate('/courses',{replace:true});
+      } catch (error) {
+        alert("Some Error ",error.message);
       }
-      localStorage.setItem('token',resp.token);
-      navigate('/courses',{replace:true});
     }
 
     return <div>

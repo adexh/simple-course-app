@@ -6,25 +6,28 @@ import CreateCourse from './components/CreateCourse';
 import Register from './components/Register';
 import ShowCourses from './components/ShowCourses';
 import './App.css'
-
+import { Privateroute } from "./utils/private_route";
+import { SessionContextProvider } from "./contexts/auth_context";
+SessionContextProvider
 // This file shows how you can do routing in React.
 // Try going to /login, /register, /about, /courses on the website and see how the html changes
 // based on the route.
 // You can also try going to /random and see what happens (a route that doesnt exist)\
 
 function App() {
-
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Landing />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/courses" element={<ShowCourses />} />
-                <Route path="/about" element={<CreateCourse />} />
-            </Routes>
-        </Router>
-    );
+  return (
+    <SessionContextProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Privateroute path="/courses" element={<ShowCourses />} />
+          <Privateroute path="/about" element={<CreateCourse />} />
+        </Routes>
+      </Router>
+    </SessionContextProvider>
+  );
 }
 
 export default App;
