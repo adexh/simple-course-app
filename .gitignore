@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+package-lock.json
+yarn.lock
 
 # Editor directories and files
 .vscode/*
@@ -25,4 +27,3 @@ dist-ssr
 
 # Sesnsitive
 .env
-package-lock.json
