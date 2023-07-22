@@ -25,3 +25,4 @@ dist-ssr
 
 # Sesnsitive
 .env
+package-lock.json
