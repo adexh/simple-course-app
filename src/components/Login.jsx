@@ -1,50 +1,53 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSessionContext } from "../contexts/auth_context";
+import checkAuth from "../service/auth_service";
 const env = import.meta.env;
+import axios from 'axios';
 
 /// File is incomplete. You need to add input boxes to take input for users to login.
 function Login() {
     const navigate = useNavigate();
-    const { isAuthenticated ,setAuthenticated } = useSessionContext();
+    const { setAuthenticated } = useSessionContext();
     const [email, setEmail] = React.useState("");
     const [pass, setPass] = React.useState("");
 
     const signIn = async () => {
       let options = {
-        method : 'POST',
         headers: {
           "username": email,
           "password": pass
         }
       }
       let resp=null;
-      let resp_status = null;
       try {
-        resp = await fetch(env.VITE_API + '/admin/login',options);
-        resp_status = resp.status;
-        resp = await resp.json();
-        if(resp_status !== 201){
+        resp = await axios.post(env.VITE_API + '/admin/login',options);
+        console.log("login :",resp);
+        if( resp.status !== 201){
           console.log(resp);
           alert(resp.message);
+        } else {
+          setAuthenticated(true);
+          localStorage.setItem('token',resp.data.token);
+          navigate('/logged/courses',{replace:true});
         }
-        if(resp_status !== 201){
-          console.log(resp);
-          alert(resp.message);
-        }
-        setAuthenticated(true);
-        localStorage.setItem('token',resp.token);
-        navigate('/logged/courses',{replace:true});
       } catch (error) {
         console.error(error);
         alert("Some Error ",error.message);
       }
     }
     useEffect(()=>{
-      console.log(isAuthenticated);
-      if(isAuthenticated){
-        return navigate('/logged/courses',{replace:true});
-      }
+      checkAuth().then(isAuth=>{
+        console.log("Checking auth in Login useEffect",isAuth);
+        setAuthenticated(isAuth);
+        if(isAuth){
+          return navigate('/logged/courses',{replace:true});
+        } else {
+          console.log("Problem here");
+          //localStorage.removeItem('token');
+        }
+      });
+
     },[])
 
     return <div>

@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
+import { useSessionContext } from "../contexts/auth_context";
 const env = import.meta.env;
+import axios from "axios";
 
 function Course(props) {
   return <div>
@@ -9,18 +11,17 @@ function Course(props) {
 
  function ShowCourses() {
     const [courses, setCourses] = React.useState([]);
+    const { isAuthenticated } = useSessionContext();
+    
     useEffect(()=>{
       let options = {
-        method : 'GET',
         headers: {
           "Authorization" : "Bearer " + localStorage.getItem('token')
         }
       }
-      fetch(env.VITE_API + '/admin/courses/',options).then(d=>d.json()).then(resp=>{
-        if(resp){
-            console.log("data :",resp);
-            setCourses(resp);
-        }
+      axios.get(env.VITE_API + '/admin/courses/',options).then(resp=>{
+        console.log("Setting Courses");
+        setCourses(resp.data);
       })
     },[])
     // Add code to fetch courses from the server

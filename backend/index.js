@@ -45,11 +45,11 @@ let Courses = mongoose.model('Courses', courses);
 
 const auth = (req,res,next)=>{
     if(req.headers.authorization===undefined)
-        res.sendStatus(401);
-    let token = req.headers.authorization.split(' ')[1];
+        return res.sendStatus(401);
+    let token = req.headers.authorization?req.headers.authorization.split(' ')[1]:"";
     jwt.verify(token,SECRET,(err,user)=>{
     if(err){
-        res.sendStatus(403);
+        return res.sendStatus(403);
     }
     if(user){
         req.user = user;
@@ -89,6 +89,10 @@ app.post('/admin/login', async (req, res) => {
     } else {
         res.status(403).json({ message: 'Invalid username or password' });
     }
+});
+
+app.post('/admin/tokenVerify', auth, (req,res)=>{
+  res.sendStatus(200);
 });
 
 app.post('/admin/courses', auth, (req, res) => {
