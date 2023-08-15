@@ -1,0 +1,17 @@
+.home-header {
+  height: 60px;
+  width: 100%;
+  border-bottom: 1px solid rgb(179, 179, 179);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.h_h_menu {
+  color:white;
+}
+
+.h_h_content {
+  color: rgb(49, 49, 49);
+  font-size: 2rem;
+}

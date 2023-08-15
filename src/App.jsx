@@ -1,13 +1,15 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './components/Login';
-import Landing from "./components/Landing";
-import CreateCourse from './components/CreateCourse';
-import Register from './components/Register';
-import ShowCourses from './components/ShowCourses';
+import Login from './pages/login/Login';
+import CreateCourse from './pages/course-admin/CreateCourse';
+import Register from './pages/course-admin/Register';
+import ShowCourses from './pages/courses/ShowCourses';
 import './App.css'
 import { Privateroute } from "./utils/private_route";
 import { SessionContextProvider } from "./contexts/auth_context";
+import Home from "./pages/home/home";
+import { ThemeProvider } from "@emotion/react";
+import theme from "./utils/themeStore";
 
 // This file shows how you can do routing in React.
 // Try going to /login, /register, /about, /courses on the website and see how the html changes
@@ -16,10 +18,11 @@ import { SessionContextProvider } from "./contexts/auth_context";
 
 function App() {
   return (
-    <SessionContextProvider>
+    <ThemeProvider theme={theme}>
+      <SessionContextProvider>
         <Router>
           <Routes>
-            <Route path="/" element={<Landing />} />
+            <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/logged" element={<Privateroute />}>
@@ -28,7 +31,8 @@ function App() {
             </Route>
           </Routes>
         </Router>
-    </SessionContextProvider>
+      </SessionContextProvider>
+    </ThemeProvider>
   );
 }
 
