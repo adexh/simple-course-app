@@ -2,19 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const jwt = require('jsonwebtoken')
-const mongoose = require('mongoose');
 require('dotenv').config();
-const db = process.env.DB_NAME;
-const user = process.env.DB_USER;
-const pass = process.env.DB_PASS;
-const host = 'cluster0.hhinerl.mongodb.net'
-const SECRET = process.env.SECRET;
-mongoose.connect(`mongodb+srv://${user}:${pass}@${host}/${db}`).then(()=>{
-  console.log("MongoDb Connected");
-});
+
 
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173'],
   optionsSuccessStatus: 200
 }
 
@@ -26,11 +18,11 @@ let admins = new mongoose.Schema({
     username: String,
     password: String,
 });
-let users = new mongoose.Schema({
-    username: String,
-    password: String,
-    courses: [{ type: mongoose.Types.ObjectId, ref: 'Courses' }]
-});
+// let users = new mongoose.Schema({
+//     username: String,
+//     password: String,
+//     courses: [{ type: mongoose.Types.ObjectId, ref: 'Courses' }]
+// });
 let courses = new mongoose.Schema({
     title: String,
     description: String,

@@ -2,42 +2,56 @@ import React, { useEffect } from "react";
 import { useSessionContext } from "../../contexts/auth_context";
 const env = import.meta.env;
 import axios from "axios";
-import { Box, Container, Paper, Typography, Card, CardMedia, CardActions, CardContent, Button, Grid } from '@mui/material';
-
-const courses = [
-  {
-    title: 'Full Stack',
-    _id : Math.random()
-  },
-  {
-    title: 'Frontend',
-    _id : Math.random()
-  },
-  {
-    title: 'Backend',
-    _id : Math.random()
-  }
-]
-
+import { Box, Container, Paper, Typography, Card, CardMedia, CardActions, CardContent, Button, Grid, useTheme } from '@mui/material';
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import { Link } from "react-router-dom";
 
 function Course(props) {
+  const theme = useTheme();
   return <div>
-    <Card sx={{ maxWidth: 345, m: 5 }}>
+    <Card sx={{ margin: 2, height: '360px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
       <CardMedia
         component="img"
-        alt="green iguana"
+        image="https://picsum.photos/200/300"
+        alt="course"
         height="140"
       />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {props.title}
+      <CardContent
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          paddingBottom: '0',
+          flexGrow: 1,
+        }}>
+        <Link style={{textDecoration:'none'}} to={"/course/"+props.data._id}>
+          <Typography gutterBottom variant="h5" component="div"
+            sx={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitLineClamp: "2",
+              WebkitBoxOrient: "vertical",
+              textDecoration: 'none',
+              color: 'black'
+            }}>
+            {props.data.title}
+          </Typography>
+        </Link>
+        <Typography variant="body2" color="text.secondary"
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitLineClamp: "2",
+            WebkitBoxOrient: "vertical",
+          }}>
+          {props.data.description}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+        <Typography component={'div'} variant="h5" color="text.secondary" flexGrow={1} sx={{ display: 'flex', alignItems: 'flex-end' }}>
+          <CurrencyRupeeIcon sx={{ marginBottom: '5px', color: 'black' }} />{props.data.price}
         </Typography>
       </CardContent>
-      <CardActions sx={{display : 'flex', justifyContent : 'center'}}>
+      <CardActions sx={{ display: 'flex', justifyContent: 'center', alignItems: 'end', marginBottom: '10px' }}>
         <Button variant="contained" >Add to Cart</Button>
       </CardActions>
     </Card>
@@ -45,31 +59,19 @@ function Course(props) {
 }
 
 function ShowCourses() {
-  const [courses, setCourses] = React.useState(['FullStack', 'Frontend']);
-  const { isAuthenticated } = useSessionContext();
+  const [courses, setCourses] = React.useState([]);
 
   useEffect(() => {
-    let options = {
-      headers: {
-        "Authorization": "Bearer " + localStorage.getItem('token')
-      }
-    }
-
-    axios.get(env.VITE_API + '/admin/courses/', options).then(resp => {
-      console.log("Setting Courses");
-      setCourses(resp.data);
+    axios.get(env.VITE_API + '/courses/displayCourses').then(resp => {
+      setCourses(resp.data.coursesdata);
     })
   }, [])
 
-  // Add code to fetch courses from the server
-  // and set it in the courses state variable.
   return <div>
     <Grid container spacing={2}>
-        {courses.map(c => <Grid item xs={12} md={6} lg={3}><Course title={c.title} key={c._id} listId={c._id} /></Grid>)}
+      {courses.map(c => <Grid key={c._id} item xs={12} md={6} lg={4}><Course data={c} key={c._id} /></Grid>)}
     </Grid>
   </div>
 }
-
-
 
 export default ShowCourses;

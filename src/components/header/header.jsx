@@ -15,20 +15,23 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
+import Badge from '@mui/material/Badge';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useTheme } from '@mui/material/styles';
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['Explore', 'Blog', 'Contact Us'];
+const settings = ['Profile', 'Dashboard', 'Logout'];
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  borderRadius: '20px',
+  border: '1px solid black',
+  backgroundColor: alpha(theme.palette.primary.light, 0.25),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: alpha(theme.palette.primary.light, 0.15),
   },
   marginRight: theme.spacing(3),
   marginLeft: 0,
-  width: '100%',
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(1),
     width: 'auto',
@@ -55,11 +58,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     width: '100%',
     [theme.breakpoints.up('md')]: {
       width: '20ch',
+      '&:focus': {
+        width: '40ch',
+      },
     },
   },
 }));
 
 function ResponsiveAppBar() {
+  const theme = useTheme();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -97,10 +104,10 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            CourseX
+            Coursed
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -136,7 +143,6 @@ function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
-          <DeveloperBoardIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -145,6 +151,8 @@ function ResponsiveAppBar() {
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
+              justifyContent:'center',
+              alignItems:'center',
               flexGrow: 1,
               fontFamily: 'monospace',
               fontWeight: 700,
@@ -152,9 +160,10 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            CourseX
+            <DeveloperBoardIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+            Coursed
           </Typography>
-          <Box sx={{flexGrow: 1, display: { xs: 'none', md: 'flex' } , justifyContent : 'right', mr : 5 }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'right', alignItems: 'center', mr: 4 }}>
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />
@@ -164,22 +173,30 @@ function ResponsiveAppBar() {
                 inputProps={{ 'aria-label': 'search' }}
               />
             </Search>
+            {pages.map((page) => (
+              <Button
+                key={page}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: 'inherit', display: 'block' }}
+              >
+                {page}
+              </Button>
+            ))}
+            <Button sx={{color: 'inherit', display: 'block', '&:hover':{color:theme.palette.primary.light} }} disableRipple>
+              <Badge badgeContent={4} color="error" >
+                <ShoppingCartIcon />
+              </Badge>
+            </Button>
           </Box>
-          <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } , justifyContent : 'right', mr : 4 }}>
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  {page}
-                </Button>
-              ))}
-          </Box>
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, display:'flex'}}>
+            <Button sx={{color: 'inherit', display: {xs:'block',md:'none'}, '&:hover':{color:theme.palette.primary.light} }} disableRipple>
+              <Badge badgeContent={4} color="error" >
+                <ShoppingCartIcon />
+              </Badge>
+            </Button>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Adesh Tamrakar" src="undraw_pic_profile_re_7g2h.svg" />
               </IconButton>
             </Tooltip>
             <Menu

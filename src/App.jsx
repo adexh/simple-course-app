@@ -10,6 +10,7 @@ import { SessionContextProvider } from "./contexts/auth_context";
 import Home from "./pages/home/home";
 import { ThemeProvider } from "@emotion/react";
 import theme from "./utils/themeStore";
+import CoursePage from "./pages/courses/CoursePage";
 
 // This file shows how you can do routing in React.
 // Try going to /login, /register, /about, /courses on the website and see how the html changes
@@ -23,6 +24,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/course/:id" element={<CoursePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/logged" element={<Privateroute />}>
