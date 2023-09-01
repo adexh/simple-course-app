@@ -11,6 +11,7 @@ import Home from "./pages/home/home";
 import { ThemeProvider } from "@emotion/react";
 import theme from "./utils/themeStore";
 import CoursePage from "./pages/courses/CoursePage";
+import Cart from "./pages/cart/Cart";
 
 // This file shows how you can do routing in React.
 // Try going to /login, /register, /about, /courses on the website and see how the html changes
@@ -25,11 +26,11 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/course/:id" element={<CoursePage />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/cart" element={<Cart />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/logged" element={<Privateroute />}>
-              <Route path="courses" element={<ShowCourses />} />
-              <Route path="create" element={<CreateCourse />} />
+            <Route path="/user" element={<Privateroute />}>
+              <Route path="editProfile" element={<ShowCourses />} />
+              <Route path="dashboard" element={<CreateCourse />} />
             </Route>
           </Routes>
         </Router>

@@ -18,6 +18,8 @@ import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
 import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useTheme } from '@mui/material/styles';
+import Loginpop from '../../pages/login/login_popup';
+import { Link } from 'react-router-dom';
 
 const pages = ['Explore', 'Blog', 'Contact Us'];
 const settings = ['Profile', 'Dashboard', 'Logout'];
@@ -83,6 +85,16 @@ function ResponsiveAppBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -163,7 +175,7 @@ function ResponsiveAppBar() {
             <DeveloperBoardIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
             Coursed
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'right', alignItems: 'center', mr: 4 }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'right', alignItems: 'center', mr: 1 }}>
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />
@@ -182,7 +194,9 @@ function ResponsiveAppBar() {
                 {page}
               </Button>
             ))}
-            <Button sx={{color: 'inherit', display: 'block', '&:hover':{color:theme.palette.primary.light} }} disableRipple>
+            <Loginpop/>
+            <Button component={Link} to={'/cart'} sx={{color: 'inherit', display: 'flex', '&:hover':{color:theme.palette.primary.light} }} disableRipple>
+              {/*Shopping Cart Button Icon*/}
               <Badge badgeContent={4} color="error" >
                 <ShoppingCartIcon />
               </Badge>
