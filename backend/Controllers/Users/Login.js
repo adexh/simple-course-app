@@ -32,8 +32,8 @@ const login = async (req, res) => {
       res
         .status(200)
         .cookie("jwt", token, {
-          expires: new Date(Date.now() + 2589200000),
-          // httpOnly: true,
+          maxAge: 900000,
+          httpOnly: true,
         })
         .json({ token, role: UsersModel.role});
     }

@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSessionContext } from "../../contexts/auth_context";
-import checkAuth from "../../service/auth_service";
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 const env = import.meta.env;
 import axios from 'axios';
-import './login.css'
+import { loginService } from "../../services/login";
 
 /// File is incomplete. You need to add input boxes to take input for users to login.
 function Login() {
@@ -40,14 +39,14 @@ function Login() {
     }
   }
   useEffect(() => {
-    checkAuth().then(isAuth => {
+    loginService().then(isAuth => {
       console.log("Checking auth in Login useEffect", isAuth);
       setAuthenticated(isAuth);
       if (isAuth) {
         return navigate('/logged/courses', { replace: true });
       } else {
         console.log("Problem here");
-        //localStorage.removeItem('token');
+        localStorage.removeItem('token');
       }
     });
 

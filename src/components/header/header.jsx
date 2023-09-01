@@ -87,16 +87,6 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -195,7 +185,7 @@ function ResponsiveAppBar() {
               </Button>
             ))}
             <Loginpop/>
-            <Button component={Link} to={'/cart'} sx={{color: 'inherit', display: 'flex', '&:hover':{color:theme.palette.primary.light} }} disableRipple>
+            <Button component={Link} to={'/user/cart'} sx={{color: 'inherit', display: 'flex', '&:hover':{color:theme.palette.primary.light} }} disableRipple>
               {/*Shopping Cart Button Icon*/}
               <Badge badgeContent={4} color="error" >
                 <ShoppingCartIcon />

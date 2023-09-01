@@ -7,7 +7,7 @@ import ShowCourses from './pages/courses/ShowCourses';
 import './App.css'
 import { Privateroute } from "./utils/private_route";
 import { SessionContextProvider } from "./contexts/auth_context";
-import Home from "./pages/home/home";
+import Home from "./pages/home/Home";
 import { ThemeProvider } from "@emotion/react";
 import theme from "./utils/themeStore";
 import CoursePage from "./pages/courses/CoursePage";
@@ -26,11 +26,11 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/course/:id" element={<CoursePage />} />
-            <Route path="/cart" element={<Cart />} />
             <Route path="/register" element={<Register />} />
             <Route path="/user" element={<Privateroute />}>
               <Route path="editProfile" element={<ShowCourses />} />
               <Route path="dashboard" element={<CreateCourse />} />
+              <Route path="cart" element={<Cart />} />
             </Route>
           </Routes>
         </Router>

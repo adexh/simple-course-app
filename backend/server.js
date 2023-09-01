@@ -11,9 +11,11 @@ var corsOptions = {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true)
     } else {
-      callback(new Error('Not allowed by CORS'))
+      console.log("Not allowed by CORS");
+      callback('Not allowed by CORS')
     }
-  }
+  },
+  credentials:true //Added this to handle CORS cookie set issue
 }
 
 app.use(cookieParser());

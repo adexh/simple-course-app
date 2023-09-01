@@ -1,18 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-const env = import.meta.env;
+import { loginService } from "../services/login";
 
 export const loginUser = createAsyncThunk(
   'user/loginUser',
   async(userCredentials) => {
-    console.log("user creds",userCredentials);
-    const request = await axios.get(`${env.VITE_API}/user/userLogin`,{
-      headers : {
-        username : userCredentials.email,
-        password : userCredentials.password
-      }
-    })
-    return request.data;
+    const result = await loginService(userCredentials);
+    console.log("from slice",result);
+    return result;
   }
 )
 

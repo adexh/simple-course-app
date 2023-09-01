@@ -8,49 +8,34 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Button, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../slice/userSlice';
-import axios from 'axios';
-import { loginService } from '../../services/login';
+import { setOpen,setClose } from '../../slice/loginPopupSlice';
 
 export default function Loginpop() {
-  const [open, setOpen] = React.useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const error = true;
 
-  //const {loading, error} = useSelector(state=>state.user);
+  const {loading, error} = useSelector(state=>state.user);
+  const popupState = useSelector(state=>state.loginPopup.value);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const handleSignin = (e) => {
     // e.preventDefault();
     let userCredentials = {
       email,password
     }
-    // dispatch(loginUser(userCredentials)).then((result)=>{
-    //   if(result.payload){
-    //     setEmail('');
-    //     setPassword('');
-    //   }
-    // })
-
-    loginService(userCredentials).then(d=>{
-      console.log("data ",d);
+    dispatch(loginUser(userCredentials)).then((result)=>{
+      console.log("login_popup result :",result);
+      if(result.payload){
+        localStorage.setItem('user',JSON.stringify({username:email,token:result.payload.token}));
+      }
     })
+    dispatch(setClose());
   }
   
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-
-
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen} sx={{
+      <Button variant="outlined" onClick={()=>dispatch(setOpen())} sx={{
               marginLeft:'5px',
               color:'black',
               fontWeight:'bold',
@@ -61,13 +46,13 @@ export default function Loginpop() {
             }}>
               Login
       </Button>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={popupState} onClose={()=>dispatch(setClose())}>
         <DialogTitle>Login</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
-            id="name"
+            id="email"
             label="Email Address / Username"
             type="email"
             fullWidth
@@ -118,7 +103,7 @@ export default function Loginpop() {
               },
               width:'100px'
             }}>Signin</Button>
-          <Button onClick={handleClose} sx={{
+          <Button onClick={()=>dispatch(setClose())} sx={{
               marginLeft:'5px',
               marginRight:'15px',
               color:'black',
