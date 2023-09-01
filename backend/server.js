@@ -5,7 +5,7 @@ const connection = require("./utils/mongodb_connect");
 const cors = require('cors');
 var cookieParser = require("cookie-parser");
 
-var whitelist = ['http://localhost:5173', 'http://example2.com']
+var whitelist = ['http://localhost:5173']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
@@ -32,7 +32,7 @@ const Courses = require("./routers/productRoute");
 /*
 This is to enable pre-flight cors check accross the APIs
 */
-app.options('*', cors(corsOptions));
+app.options("/user/userLogin", cors(corsOptions));
 
 //app.use("/consumer");
 app.use("/user", user);

@@ -10,9 +10,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Product from "./product";
+import CartCheckout from "./CartCheckout";
 const env = import.meta.env;
 
 function Cart() {
+
+  const {productList, setProductList} = useState([]);
+
+  useEffect(()=>{
+    
+  },[])
 
   return (
     <div>
@@ -38,6 +45,7 @@ function Cart() {
           display:{md:'flex'},
           border:'1px solid black'
         }}>
+          {/* Products inside cart */}
           <Box
           sx={{
             border:'1px solid black',
@@ -46,11 +54,14 @@ function Cart() {
           }}>
             <Product/>
           </Box>
+          {/* Checkout Cart Section */}
           <Box
           sx={{
             border:'1px solid black',
             width:'30%'
-          }}></Box>
+          }}>
+            <CartCheckout/>
+          </Box>
         </Box>
       </Box>
       <Footer/>

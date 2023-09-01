@@ -1,15 +1,10 @@
-const User = require("../../Models/User");
-const Courses = require("../../Models/Courses");
+const User = require("../../models/User");
 
 const cart = async (req, res) => {
   try {
-    let ID = req.query.ID;
+    let ID = req.user._id;
 
-    if (!ID) {
-      return res.status(400).json({ message: "No user ID found in the request body." }); // Bad Request
-    }
-
-    const userData = await User.findOne({ id: ID });
+    const userData = await User.findOne({ _id: ID }).populate({path:'cart.courses'}).exec();
 
     if (!userData) {
       return res.status(404).json({ message: "User not found." });
@@ -17,15 +12,8 @@ const cart = async (req, res) => {
 
     const cartItems = userData.cart; // Assuming `cart` is an array of course IDs
 
-    if (cartItems.length === 0) {
-      return res.status(404).json({ message: "No items found in the cart." });
-    }
-
-    // Fetch the courses based on the IDs in the cart
-    const coursesInCart = await Courses.find({ id: { $in: cartItems } });
-
     // Send the cart items in JSON format
-    res.json(coursesInCart);
+    res.json(cartItems).send();
 
   } catch (err) {
     console.log("Error: ", err.message);

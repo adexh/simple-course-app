@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
 const jwt = require(`jsonwebtoken`);
 
 const userSchema = mongoose.Schema({
@@ -6,12 +7,10 @@ const userSchema = mongoose.Schema({
   email: { type: String },
   username: { type: String, required: true, unique: true },
   password: { type: String },
-  token: String,
-  cart: {
-    type: [String],
-    ref: "Cart",
-    default: [0],
-  },
+  cart: [{
+    type: Schema.Types.ObjectId,
+    ref: "courses"}
+  ],
   role: { type: String, default: "user" }, // Role of User
   moneyBalance: { type: Number, default: 0 }, // Money balance of the user
   orderedItems: {
@@ -25,8 +24,6 @@ const userSchema = mongoose.Schema({
 userSchema.methods.generateAuthToken = async function () {
   try {
     let token = jwt.sign({ _id: this._id }, process.env.SECRET);
-    this.token = token;
-    await this.save();
     return token;
   } catch (err) {
     console.log(err);

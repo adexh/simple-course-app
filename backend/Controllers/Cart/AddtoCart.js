@@ -1,5 +1,4 @@
-const CartItem = require("../../Models/Courses");
-const Users = require("../../Models/User");
+const Users = require("../../models/User");
 
 const cart = async (req, res) => {
     try {
@@ -11,7 +10,6 @@ const cart = async (req, res) => {
           return res.status(400).json({ message: "Data Not appropriate" }); // Bad Request
         }
 
-        const Course = await CartItem.findOne({ itemId });
         const user = await Users.findOne({ _id:id });
       
         if (!Course) {

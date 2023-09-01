@@ -33,9 +33,9 @@ const login = async (req, res) => {
         .status(200)
         .cookie("jwt", token, {
           expires: new Date(Date.now() + 2589200000),
-          httpOnly: true,
+          // httpOnly: true,
         })
-        .json({ message: "User signin Successfully", role: UsersModel.role });
+        .json({ token, role: UsersModel.role});
     }
   } catch (err) {
     console.log("error: ", err);
