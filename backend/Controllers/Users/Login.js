@@ -35,7 +35,7 @@ const login = async (req, res) => {
           maxAge: 900000,
           httpOnly: true,
         })
-        .json({ token, role: UsersModel.role});
+        .json({ token, role: UsersModel.role,username:UserData.username,email:UserData.email});
     }
   } catch (err) {
     console.log("error: ", err);

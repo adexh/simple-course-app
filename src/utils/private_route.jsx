@@ -1,14 +1,14 @@
 import { Outlet } from "react-router-dom";
-import { useSessionContext } from "../contexts/auth_context";
 import { useNavigate } from "react-router-dom";
 import { loginService } from "../services/login";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setOpen } from "../slice/loginPopupSlice";
+import { setAuthenticated, unAuthenticate } from "../slice/userSlice";
 
 export const Privateroute = () => {
-  const { isAuthenticated,setAuthenticated } = useSessionContext();
 
   const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector(state=>state.user);
 
   const navigate = useNavigate();
   if(isAuthenticated){
@@ -16,11 +16,12 @@ export const Privateroute = () => {
     return <Outlet />
   } else {
     checkAuth().then(isAuth=>{
-      setAuthenticated(isAuth);
       if(isAuth){
+        dispatch(setAuthenticated());
         return <Outlet />
       }
-      //localStorage.removeItem('user');
+      dispatch(unAuthenticate());
+      localStorage.removeItem('user');
       dispatch(setOpen());
       return navigate('/',{replace:true});
     })

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSessionContext } from "../../contexts/auth_context";
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 const env = import.meta.env;
@@ -10,7 +9,6 @@ import { loginService } from "../../services/login";
 /// File is incomplete. You need to add input boxes to take input for users to login.
 function Login() {
   const navigate = useNavigate();
-  const { setAuthenticated } = useSessionContext();
   const [email, setEmail] = React.useState("");
   const [pass, setPass] = React.useState("");
 

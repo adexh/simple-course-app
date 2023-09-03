@@ -19,7 +19,10 @@ import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useTheme } from '@mui/material/styles';
 import Loginpop from '../../pages/login/login_popup';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuthenticated, unAuthenticate } from '../../slice/userSlice';
+import { setOpen } from '../../slice/loginPopupSlice';
 
 const pages = ['Explore', 'Blog', 'Contact Us'];
 const settings = ['Profile', 'Dashboard', 'Logout'];
@@ -69,8 +72,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function ResponsiveAppBar() {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const dispatch = useDispatch();
+
+  const { isAuthenticated, loading, error } = useSelector(state => state.user);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -83,9 +91,32 @@ function ResponsiveAppBar() {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCartClick = ()=> {
+    if(isAuthenticated){
+      navigate('/user/cart');
+    } else {
+      dispatch(setOpen());
+    }
+  }
+
+  const handleCloseUserMenu = (idx) => {
+    if (Number.isInteger(idx) && settings[idx] == 'Logout') {
+      console.log("loggin out");
+      localStorage.removeItem('user');
+      dispatch(unAuthenticate());
+    }
     setAnchorElUser(null);
   };
+  React.useEffect(() => {
+    if (localStorage.getItem('user')) {
+      settings.forEach(e => { if (e.name == 'Logout') e.show = false });
+      dispatch(setAuthenticated());
+    } else {
+      if (isAuthenticated) {
+        dispatch(unAuthenticate());
+      }
+    }
+  }, []);
 
   return (
     <AppBar position="static">
@@ -153,8 +184,8 @@ function ResponsiveAppBar() {
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
-              justifyContent:'center',
-              alignItems:'center',
+              justifyContent: 'center',
+              alignItems: 'center',
               flexGrow: 1,
               fontFamily: 'monospace',
               fontWeight: 700,
@@ -184,16 +215,16 @@ function ResponsiveAppBar() {
                 {page}
               </Button>
             ))}
-            <Loginpop/>
-            <Button component={Link} to={'/user/cart'} sx={{color: 'inherit', display: 'flex', '&:hover':{color:theme.palette.primary.light} }} disableRipple>
+            {!isAuthenticated && <Loginpop />}
+            <Button onClick={handleCartClick} sx={{ color: 'inherit', display: 'flex', '&:hover': { color: theme.palette.primary.light } }} disableRipple>
               {/*Shopping Cart Button Icon*/}
               <Badge badgeContent={4} color="error" >
                 <ShoppingCartIcon />
               </Badge>
             </Button>
           </Box>
-          <Box sx={{ flexGrow: 0, display:'flex'}}>
-            <Button sx={{color: 'inherit', display: {xs:'block',md:'none'}, '&:hover':{color:theme.palette.primary.light} }} disableRipple>
+          <Box sx={{ flexGrow: 0, display: 'flex' }}>
+            <Button sx={{ color: 'inherit', display: { xs: 'block', md: 'none' }, '&:hover': { color: theme.palette.primary.light } }} disableRipple>
               <Badge badgeContent={4} color="error" >
                 <ShoppingCartIcon />
               </Badge>
@@ -219,8 +250,12 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+              <Typography sx={{
+                marginLeft:'10px',
+                marginRight:'5px'
+              }}>Hi {isAuthenticated?'':'Guest'} !</Typography>
+              {isAuthenticated && settings.map((setting, idx) => (
+                <MenuItem key={setting} onClick={() => handleCloseUserMenu(idx)}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

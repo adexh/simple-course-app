@@ -25,12 +25,11 @@ export default function Loginpop() {
       email,password
     }
     dispatch(loginUser(userCredentials)).then((result)=>{
-      console.log("login_popup result :",result);
       if(result.payload){
-        localStorage.setItem('user',JSON.stringify({username:email,token:result.payload.token}));
+        localStorage.setItem('user',JSON.stringify({username:email}));
+        dispatch(setClose());
       }
     })
-    dispatch(setClose());
   }
   
   return (

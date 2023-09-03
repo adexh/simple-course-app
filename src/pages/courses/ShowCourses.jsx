@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useSessionContext } from "../../contexts/auth_context";
 const env = import.meta.env;
 import axios from "axios";
 import { Box, Container, Paper, Typography, Card, CardMedia, CardActions, CardContent, Button, Grid, useTheme } from '@mui/material';

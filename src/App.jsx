@@ -1,12 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './pages/login/Login';
 import CreateCourse from './pages/course-admin/CreateCourse';
 import Register from './pages/course-admin/Register';
 import ShowCourses from './pages/courses/ShowCourses';
 import './App.css'
 import { Privateroute } from "./utils/private_route";
-import { SessionContextProvider } from "./contexts/auth_context";
 import Home from "./pages/home/Home";
 import { ThemeProvider } from "@emotion/react";
 import theme from "./utils/themeStore";
@@ -21,7 +19,6 @@ import Cart from "./pages/cart/Cart";
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <SessionContextProvider>
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -34,7 +31,6 @@ function App() {
             </Route>
           </Routes>
         </Router>
-      </SessionContextProvider>
     </ThemeProvider>
   );
 }
