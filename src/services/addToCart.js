@@ -12,6 +12,9 @@ async function addToCart (id){
     }
   } catch (error) {
     console.log(error);
+    if(error.response && error.response.status == 409){
+      alert("Product present in Cart !");
+    }
     return error;
   }
 }
