@@ -55,7 +55,9 @@ function Cart() {
         </Typography>
         <Divider/>
         <Box sx={{
-          display:{md:'flex'},
+          display:{xs:'block',md:'flex'},
+          justifyContent:'space-between',
+          marginTop:'15px'
         }}>
           {/* Products inside cart */}
           <Box
@@ -63,20 +65,20 @@ function Cart() {
             width:'70%'
           }}>
             {productList.map((prod,idx)=>{
-              if(idx>0 && idx!=productList.length-1){
+              if(idx>0 && idx!=productList.length){
                 return(<>
                   <Divider/>
-                  <Product key={prod._id} product={prod}/>
+                  <Product key={prod._id} product={prod} removeProduct={setProductList} allProducts={productList}/>
                 </>
                 )
               }
-              return(<Product key={prod._id} product={prod}/>)
+              return(<Product key={prod._id} product={prod} removeProduct={setProductList} allProducts={productList}/>)
             })}
           </Box>
           {/* Checkout Cart Section */}
           <Box
           sx={{
-            width:'30%'
+            width:'25%',
           }}>
             <CartCheckout Amt={totalAmt}/>
           </Box>

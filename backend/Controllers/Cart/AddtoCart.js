@@ -12,12 +12,16 @@ const cart = async (req, res) => {
 
         const Course = await Courses.findOne({ _id:itemId });
         const User = await Users.findOne({ _id:id })
+        const cartItem = await Users.findOne({ _id:id, cart: itemId});
       
         if (!Course) {
           return res.status(404).json({ message: "No Such Product Found." });
         }
         if(!User){
             return res.status(404).json({ message: "No Such User Found." });
+        }
+        if(cartItem){
+            return res.status(200).json({ message: "Item already present in the Cart" });
         }
       
         // Add the ID of this course, to user's data->cart->id array.

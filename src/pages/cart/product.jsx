@@ -1,10 +1,18 @@
-import { Box, Typography, Rating } from "@mui/material";
+import { Box, Typography, Rating, IconButton} from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 import SellIcon from '@mui/icons-material/Sell';
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
+import removeFromCart from "../../services/removeFromCart";
 
 export default function Product(props) {
   const product = props.product;
+
+  const handleRemoveFromCart = (id)=> {
+    removeFromCart(id);
+    const filteredList = props.allProducts.filter(e=>e._id != id);
+    props.removeProduct(filteredList);
+  }
+
   return (
     <Box sx={{
       width: 'auto',
@@ -63,7 +71,9 @@ export default function Product(props) {
       sx={{
         marginLeft:'10px'
       }}>
-        <CancelTwoToneIcon/>
+        <IconButton size="small" onClick={()=>handleRemoveFromCart(product._id)}>
+          <CancelTwoToneIcon/>
+        </IconButton>
       </Box>
     </Box>
   )
