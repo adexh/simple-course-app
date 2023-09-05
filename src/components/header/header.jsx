@@ -19,10 +19,12 @@ import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useTheme } from '@mui/material/styles';
 import Loginpop from '../../pages/login/login_popup';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthenticated, unAuthenticate } from '../../slice/userSlice';
 import { setOpen } from '../../slice/loginPopupSlice';
+import { authService } from '../../services/auth';
+import { logoutService } from '../../services/logout';
 
 const pages = ['Explore', 'Blog', 'Contact Us'];
 const settings = ['Profile', 'Dashboard', 'Logout'];
@@ -73,6 +75,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function ResponsiveAppBar() {
   const theme = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -92,30 +95,31 @@ function ResponsiveAppBar() {
   };
 
   const handleCartClick = ()=> {
-    if(isAuthenticated){
-      navigate('/user/cart');
-    } else {
-      dispatch(setOpen());
-    }
+    navigate('/user/cart');
+    // if(isAuthenticated){
+    //   navigate('/user/cart');
+    // } else {
+    //   dispatch(setOpen());
+      
+    // }
   }
 
   const handleCloseUserMenu = (idx) => {
     if (Number.isInteger(idx) && settings[idx] == 'Logout') {
-      console.log("loggin out");
-      localStorage.removeItem('user');
+      logoutService();
       dispatch(unAuthenticate());
     }
     setAnchorElUser(null);
   };
   React.useEffect(() => {
-    if (localStorage.getItem('user')) {
-      settings.forEach(e => { if (e.name == 'Logout') e.show = false });
-      dispatch(setAuthenticated());
-    } else {
-      if (isAuthenticated) {
+    authService().then(auth=>{
+      if(auth){
+        settings.forEach(e => { if (e.name == 'Logout') e.show = false });
+        dispatch(setAuthenticated());
+      } else {
         dispatch(unAuthenticate());
       }
-    }
+    })
   }, []);
 
   return (

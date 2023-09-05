@@ -1,13 +1,13 @@
 import { Box,Typography,Button } from "@mui/material";
 
-export default function CartCheckout(){
+export default function CartCheckout(props){
   return (
     <Box>
-      <Typography variant='subtitle1'>
+      <Typography variant='body1'>
         Total:
       </Typography>
       <Typography variant='h3'>
-        ₹429
+        ₹{props.Amt}
       </Typography>
       <Button>
         Checkout

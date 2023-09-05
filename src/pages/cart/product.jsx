@@ -3,13 +3,12 @@ import StarIcon from '@mui/icons-material/Star';
 import SellIcon from '@mui/icons-material/Sell';
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
 
-export default function Product() {
+export default function Product(props) {
+  const product = props.product;
   return (
     <Box sx={{
       width: 'auto',
-      height: '200px',
       margin: '10px',
-      border: '1px solid black',
       display: 'flex',
     }}>
       <img src='https://picsum.photos/128/68' style={{
@@ -21,10 +20,10 @@ export default function Product() {
           marginLeft: '10px',
         }}>
         <Typography variant="body1" fontWeight='bold'>
-          Part 1: AWS Certified Solutions Architect SAA C03 [2023]
+          {product.title}
         </Typography>
         <Typography variant='subtitle2'>
-          By Adesh Tamrakar
+          By {product.created_by}
         </Typography>
         <Box sx={{
           display: 'flex',
@@ -56,7 +55,7 @@ export default function Product() {
           justifyContent: 'right'
         }}>
         <Typography variant='h6' fontWeight='bold' color='#4a148c'>
-          ₹429
+          ₹{product.price}
         </Typography>
         <SellIcon fontSize='small' sx={{ marginTop: '7px', color: '#4a148c' }} />
       </Box>

@@ -9,10 +9,14 @@ import { Button, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../slice/userSlice';
 import { setOpen,setClose } from '../../slice/loginPopupSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Loginpop() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const {loading, error} = useSelector(state=>state.user);
   const popupState = useSelector(state=>state.loginPopup.value);
@@ -26,8 +30,11 @@ export default function Loginpop() {
     }
     dispatch(loginUser(userCredentials)).then((result)=>{
       if(result.payload){
-        localStorage.setItem('user',JSON.stringify({username:email}));
         dispatch(setClose());
+        if(location.state.from){
+          console.debug("location from loginPopup :",location.state.from);
+          navigate(location.state.from.location);
+        }
       }
     })
   }

@@ -11,25 +11,38 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import Product from "./product";
 import CartCheckout from "./CartCheckout";
+import getCartItems from "../../services/cartItems";
 const env = import.meta.env;
 
 function Cart() {
 
-  const {productList, setProductList} = useState([]);
+  const [productList, setProductList] = useState([]);
+  const [totalAmt, setTotalAmt] = useState(0);
 
   useEffect(()=>{
-    
+    getCartItems().then((resp)=>{
+      setProductList(resp.cartItems);
+      let amt = 0;
+      resp.cartItems.forEach(el=>{
+        amt = amt + el.price;
+        console.log("amt ",amt);
+      })
+      setTotalAmt(amt);
+    })
   },[])
 
   return (
-    <div>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: '100vh'
+    }}>
       <ResponsiveAppBar/>
       <Box
-      //display={{xs:'none'}}
       sx={{
         width:'auto',
-        minHeight:'50vh',
-        margin:{xs:'20px 50px 0 50px',md:'20px 100px 20px 100px',lg:'20px 200px 20px 200px'}//'20px 200px 0 200px'
+        margin:{xs:'20px 50px 0 50px',md:'20px 100px 20px 100px',lg:'20px 200px 20px 200px'},
+        flexGrow:1//'20px 200px 0 200px'
       }}>
         <Typography variant="h4"
         sx={{
@@ -38,29 +51,34 @@ function Cart() {
           Shopping Cart
         </Typography>
         <Typography variant='subtitle1' fontWeight='bold' marginTop='20px'>
-          {1} Course in Cart
+          {productList.length} Course{productList.length>1 && 's'} in Cart
         </Typography>
         <Divider/>
         <Box sx={{
           display:{md:'flex'},
-          border:'1px solid black'
         }}>
           {/* Products inside cart */}
           <Box
           sx={{
-            border:'1px solid black',
-            width:'70%',
-            height:'500px'
+            width:'70%'
           }}>
-            <Product/>
+            {productList.map((prod,idx)=>{
+              if(idx>0 && idx!=productList.length-1){
+                return(<>
+                  <Divider/>
+                  <Product key={prod._id} product={prod}/>
+                </>
+                )
+              }
+              return(<Product key={prod._id} product={prod}/>)
+            })}
           </Box>
           {/* Checkout Cart Section */}
           <Box
           sx={{
-            border:'1px solid black',
             width:'30%'
           }}>
-            <CartCheckout/>
+            <CartCheckout Amt={totalAmt}/>
           </Box>
         </Box>
       </Box>
