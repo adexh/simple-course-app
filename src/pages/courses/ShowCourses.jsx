@@ -4,9 +4,23 @@ import axios from "axios";
 import { Box, Container, Paper, Typography, Card, CardMedia, CardActions, CardContent, Button, Grid, useTheme } from '@mui/material';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import { Link } from "react-router-dom";
+import addToCart from "../../services/addToCart";
+import { useDispatch, useSelector } from "react-redux";
+import { setOpen } from "../../slice/loginPopupSlice";
 
 function Course(props) {
   const theme = useTheme();
+  const { isAuthenticated } = useSelector(state => state.user);
+  const dispatch = useDispatch();
+
+  const handleAddToCart = (id) => {
+    if(!isAuthenticated){
+      alert("Please login to Add to Cart !");
+      dispatch(setOpen());
+    }
+    addToCart(id);
+  }
+  
   return <div>
     <Card sx={{ margin: 2, height: '360px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
       <CardMedia
@@ -51,7 +65,7 @@ function Course(props) {
         </Typography>
       </CardContent>
       <CardActions sx={{ display: 'flex', justifyContent: 'center', alignItems: 'end', marginBottom: '10px' }}>
-        <Button variant="contained" >Add to Cart</Button>
+        <Button variant="contained" onClick={()=>handleAddToCart(props.data._id)}>Add to Cart</Button>
       </CardActions>
     </Card>
   </div>
@@ -68,7 +82,7 @@ function ShowCourses() {
 
   return <div>
     <Grid container spacing={2}>
-      {courses.map(c => <Grid key={c._id} item xs={12} md={6} lg={4}><Course data={c} key={c._id} /></Grid>)}
+      {courses.map(c => <Grid key={c._id} item xs={12} md={6} lg={4}><Course data={c} key={c.title} /></Grid>)}
     </Grid>
   </div>
 }
