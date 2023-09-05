@@ -4,19 +4,19 @@ const cart = async (req, res) => {
   try {
     let ID = req.user._id;
 
-    const userData = await User.findOne({ _id: ID }).populate({path:'cart.courses'}).exec();
+    const userData = await User.findOne({ _id: ID }).populate({path:'cart'}).exec();
 
     if (!userData) {
       return res.status(404).json({ message: "User not found." });
     }
 
-    const cartItems = userData.cart; // Assuming `cart` is an array of course IDs
+    const cartItems = userData.cart;
 
     // Send the cart items in JSON format
-    res.json(cartItems).send();
+    res.json({cartItems});
 
   } catch (err) {
-    console.log("Error: ", err.message);
+    console.log("Error: ", err);
     res.status(500).json({ message: "Something went wrong." });
   }
 }
