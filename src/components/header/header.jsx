@@ -106,20 +106,21 @@ function ResponsiveAppBar() {
 
   const handleCloseUserMenu = (idx) => {
     if (Number.isInteger(idx) && settings[idx] == 'Logout') {
-      logoutService();
-      dispatch(unAuthenticate());
+      logoutService().then(()=> dispatch(unAuthenticate()));
     }
     setAnchorElUser(null);
   };
   React.useEffect(() => {
-    authService().then(auth=>{
-      if(auth){
-        settings.forEach(e => { if (e.name == 'Logout') e.show = false });
-        dispatch(setAuthenticated());
-      } else {
-        dispatch(unAuthenticate());
-      }
-    })
+    if(!isAuthenticated){
+      authService().then(auth=>{
+        if(auth){
+          settings.forEach(e => { if (e.name == 'Logout') e.show = false });
+          dispatch(setAuthenticated());
+        } else {
+          dispatch(unAuthenticate());
+        }
+      })
+    }
   }, []);
 
   return (
