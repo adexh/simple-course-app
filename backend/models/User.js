@@ -15,8 +15,7 @@ const userSchema = mongoose.Schema({
   moneyBalance: { type: Number, default: 0 }, // Money balance of the user
   orderedItems: {
     type: [String],
-    ref: "Cart",
-    default: [0],
+    ref: "Cart"
   },
 });
 

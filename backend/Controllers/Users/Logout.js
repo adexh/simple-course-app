@@ -5,6 +5,8 @@ const logout = async (req, res) => {
       .cookie("jwt", '', {
         maxAge: 0,
         httpOnly: true,
+        sameSite: 'none',
+        secure: true
       }).send();
   } catch (err) {
     console.log("error: ", err);
