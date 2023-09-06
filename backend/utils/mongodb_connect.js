@@ -6,7 +6,7 @@ const pass = process.env.DB_PASS;
 const host = process.env.DB_HOST;
 
 const connect = () => {
-  mongoose.connect(`mongodb+srv://${user}:${pass}@${host}/${db}`).then(()=>{
+  mongoose.connect(`mongodb://${user}:${pass}@${host}/${db}`).then(()=>{
     console.log("MongoDb Connected");
   });
 }
