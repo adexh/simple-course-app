@@ -7,4 +7,5 @@ export const logoutService = async() => {
     mode:'cors',
     credentials: 'include', // Don't forget to specify this if you need cookies
   })
+  localStorage.removeItem("user");
 }

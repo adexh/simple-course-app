@@ -115,6 +115,7 @@ function ResponsiveAppBar() {
       authService().then(auth=>{
         if(auth){
           settings.forEach(e => { if (e.name == 'Logout') e.show = false });
+          console.log("Setting Authenticated from header");
           dispatch(setAuthenticated());
         } else {
           dispatch(unAuthenticate());

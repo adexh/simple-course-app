@@ -37,7 +37,7 @@ const login = async (req, res) => {
           sameSite: 'none',
           secure: true
         })
-        .json({ token, role: UsersModel.role,username:UserData.username,email:UserData.email});
+        .json({ name:UserData.name,role: UsersModel.role,username:UserData.username,email:UserData.email, id:UserData._id});
     }
   } catch (err) {
     console.log("error: ", err);

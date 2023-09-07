@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { loginService } from "../services/login";
+import { logoutService } from "../services/logout";
 
 export const loginUser = createAsyncThunk(
   'user/loginUser',
@@ -15,12 +16,12 @@ const userSlice = createSlice({
   initialState : {
     loading : false,
     isAuthenticated:false,
-    user : null,
     error : null
   },
   reducers: {
     unAuthenticate : (state)=>{
       state.isAuthenticated = false;
+      logoutService();
     },
     setAuthenticated : (state) => {
       state.isAuthenticated = true;
@@ -30,14 +31,13 @@ const userSlice = createSlice({
     builder
     .addCase(loginUser.pending,(state)=>{
       state.loading = true;
-      state.user = null;
       state.error = null;
     })
     .addCase(loginUser.fulfilled,(state,action)=>{
       state.loading = false;
       state.isAuthenticated = true;
-      state.user = action.payload;
       state.error = null;
+      localStorage.setItem("user",JSON.stringify(action.payload));
     })
     .addCase(loginUser.rejected,(state,action)=>{
       state.loading = false;

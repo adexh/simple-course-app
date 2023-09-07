@@ -7,9 +7,13 @@ import removeFromCart from "../../services/removeFromCart";
 export default function Product(props) {
   const product = props.product;
 
-  const handleRemoveFromCart = (id)=> {
+  const handleRemoveFromCart = (id,price)=> {
     removeFromCart(id);
-    const filteredList = props.allProducts.filter(e=>e._id != id);
+    const filteredList = props.allProducts.filter(e=>{
+      if(e._id != id)
+        return e;
+      props.changeAmt(props.totalAmt - price)
+    });
     props.removeProduct(filteredList);
   }
 
@@ -71,7 +75,7 @@ export default function Product(props) {
       sx={{
         marginLeft:'10px'
       }}>
-        <IconButton size="small" onClick={()=>handleRemoveFromCart(product._id)}>
+        <IconButton size="small" onClick={()=>handleRemoveFromCart(product._id,product.price)}>
           <CancelTwoToneIcon/>
         </IconButton>
       </Box>
