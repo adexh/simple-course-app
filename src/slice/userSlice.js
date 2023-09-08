@@ -25,6 +25,11 @@ const userSlice = createSlice({
     },
     setAuthenticated : (state) => {
       state.isAuthenticated = true;
+    },
+    unsetError : (state) => {
+      state.loading = false;
+      state.user = null;
+      state.error = null;
     }
   },
   extraReducers:(builder)=>{
@@ -42,12 +47,11 @@ const userSlice = createSlice({
     .addCase(loginUser.rejected,(state,action)=>{
       state.loading = false;
       state.user = null;
-      console.log(action.error.message);
       state.error = action.error.message;
     })
   }
 });
 
-export const { unAuthenticate, setAuthenticated } = userSlice.actions
+export const { unAuthenticate, setAuthenticated, unsetError } = userSlice.actions
 
 export default userSlice.reducer;

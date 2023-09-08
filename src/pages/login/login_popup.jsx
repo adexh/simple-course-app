@@ -7,7 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Button, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../../slice/userSlice';
+import { loginUser, unsetError } from '../../slice/userSlice';
 import { setOpen,setClose } from '../../slice/loginPopupSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -37,6 +37,13 @@ export default function Loginpop() {
         }
       }
     })
+  }
+
+  const handleCancel = () => {
+    dispatch(setClose());
+    if(error){
+      dispatch(unsetError());
+    }
   }
   
   return (
@@ -109,7 +116,7 @@ export default function Loginpop() {
               },
               width:'100px'
             }}>Signin</Button>
-          <Button onClick={()=>dispatch(setClose())} sx={{
+          <Button onClick={handleCancel} sx={{
               marginLeft:'5px',
               marginRight:'15px',
               color:'black',

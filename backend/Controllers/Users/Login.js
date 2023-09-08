@@ -23,7 +23,6 @@ const login = async (req, res) => {
     }
     const isMatch = await bcrypt.compare(password, UserData.password); // Decrypt Password (Secutity Feature)
     const token = await UserData.generateAuthToken();
-    console.log("Token", token);
 
     if (!isMatch) {
       console.log("Login failed");
