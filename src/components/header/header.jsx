@@ -25,6 +25,7 @@ import { setAuthenticated, unAuthenticate } from '../../slice/userSlice';
 import { setOpen } from '../../slice/loginPopupSlice';
 import { authService } from '../../services/auth';
 import { logoutService } from '../../services/logout';
+import SignupPop from '../signup/signuppop';
 
 const pages = ['Explore', 'Blog', 'Contact Us'];
 const settings = ['Profile', 'Dashboard', 'Logout'];
@@ -115,6 +116,7 @@ function ResponsiveAppBar() {
       authService().then(auth=>{
         if(auth){
           settings.forEach(e => { if (e.name == 'Logout') e.show = false });
+          console.log("Setting Authenticated from header");
           dispatch(setAuthenticated());
         } else {
           dispatch(unAuthenticate());
@@ -221,6 +223,7 @@ function ResponsiveAppBar() {
               </Button>
             ))}
             {!isAuthenticated && <Loginpop />}
+            {!isAuthenticated && <SignupPop />}
             <Button onClick={handleCartClick} sx={{ color: 'inherit', display: 'flex', '&:hover': { color: theme.palette.primary.light } }} disableRipple>
               {/*Shopping Cart Button Icon*/}
               <Badge badgeContent={4} color="error" >

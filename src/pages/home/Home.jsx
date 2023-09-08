@@ -6,13 +6,18 @@ import Footer from '../../components/footer/footer';
 
 function Home() {
   return (
-    <div>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: '100vh'
+    }}>
       <ResponsiveAppBar />
       <Box
       //display={{xs:'none'}}
       sx={{
         width:'auto',
-        margin:{xs:'20px 50px 0 50px',md:'20px 100px 20px 100px',lg:'20px 200px 20px 200px'}//'20px 200px 0 200px'
+        margin:{xs:'20px 50px 0 50px',md:'20px 100px 20px 100px',lg:'20px 200px 20px 200px'},//'20px 200px 0 200px'
+        flexGrow:1
       }}>
         <ShowCourses />
       </Box>

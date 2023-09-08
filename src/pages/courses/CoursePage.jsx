@@ -8,27 +8,62 @@ import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CircularProgress from '@mui/material/CircularProgress';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import addToCart from "../../services/addToCart";
+import { setOpen } from "../../slice/loginPopupSlice";
+import { useDispatch, useSelector } from "react-redux";
 const env = import.meta.env;
 
 function CoursePage() {
 
   const [courseData, setCourseData ]= useState({});
   const [hasLoaded, setHasLoaded] = useState();
+  const [inCart , setIncart] = useState(false);
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  useEffect(() => {
+  const { isAuthenticated } = useSelector(state=>state.user);
+
+  const handleAddToCart = (id) => {
+    if(!isAuthenticated){
+      alert("Please login to Add to Cart !");
+      dispatch(setOpen());
+    } else {
+      setIncart(true);
+      addToCart(id);
+    }
+  }
+
+  const setCourseDetails = ()=>{
+    let userDetails = null;
+    userDetails = JSON.parse(localStorage.getItem("user"));
+    console.log("getting user Details",userDetails);
     axios.get(env.VITE_API + '/courses/details',{
       headers : {
-        id
+        id,
+        userId:userDetails?.id
       }
     }).then(resp => {
       setCourseData(resp.data.coursesdata);
+      if(resp.data.inCart){
+        setIncart(true);
+      } else {
+        setIncart(false);
+      }
       setHasLoaded(true);
     })
-  }, [])
+  }
 
-  return (hasLoaded? <div>
+  useEffect(() => {
+    setCourseDetails();
+  },[])
+
+  useEffect(()=>{
+    setCourseDetails();
+  },[isAuthenticated])
+
+  return (hasLoaded? <>
     <ResponsiveAppBar />
     <Box sx={{
       width: 1,
@@ -119,6 +154,18 @@ function CoursePage() {
             {courseData.price}
           </Typography>
         </Box>
+        {inCart?        <Button
+        sx={{
+          width: '150px',
+          marginTop:'10px',
+          backgroundColor: '#a435f0',
+          '&:hover': {
+            backgroundColor: '#551582',
+          },
+        }}
+    onClick={()=>navigate('/user/cart')}>
+        Go to Cart
+        </Button>:
         <Button
             sx={{
               width: '150px',
@@ -127,9 +174,10 @@ function CoursePage() {
               '&:hover': {
                 backgroundColor: '#551582',
               },
-            }}>
-            Buy Now
-          </Button>
+            }}
+        onClick={()=>handleAddToCart(courseData._id)}>
+            Add to Cart
+        </Button>}
       </Box>
     </Box>
     <Box sx={{
@@ -182,7 +230,7 @@ function CoursePage() {
       </Box>
     </Box>
     <Footer />
-    </div>:
+    </>:
     <Box sx={{ display: 'flex' }}>
       <CircularProgress />
     </Box>)

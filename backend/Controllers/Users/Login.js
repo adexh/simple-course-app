@@ -23,7 +23,6 @@ const login = async (req, res) => {
     }
     const isMatch = await bcrypt.compare(password, UserData.password); // Decrypt Password (Secutity Feature)
     const token = await UserData.generateAuthToken();
-    console.log("Token", token);
 
     if (!isMatch) {
       console.log("Login failed");
@@ -37,7 +36,7 @@ const login = async (req, res) => {
           sameSite: 'none',
           secure: true
         })
-        .json({ token, role: UsersModel.role,username:UserData.username,email:UserData.email});
+        .json({ name:UserData.name,role: UsersModel.role,username:UserData.username,email:UserData.email, id:UserData._id});
     }
   } catch (err) {
     console.log("error: ", err);
