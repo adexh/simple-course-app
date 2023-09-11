@@ -1,5 +1,4 @@
-import * as dotenv from 'dotenv'
-import path from 'path'
+import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
@@ -7,7 +6,6 @@ import connection from './utils/mongodb_connect'
 
 import user from './routers/userRoute'
 import Courses from './routers/productRoute'
-dotenv.config({ path: path.resolve(__dirname, './.env') })
 
 const app = express()
 
