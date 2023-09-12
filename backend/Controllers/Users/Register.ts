@@ -3,24 +3,23 @@ import user from '../../models/User'
 import bcrypt from 'bcryptjs'
 
 const register = async (req: Request, res: Response): Promise<void> => {
-  console.log('Reached Inside Register Route')
   try {
     const { fullName: name, email, password, username } = req.body // input from user
 
-    if (req.body !== undefined) {
+    if (req.body === undefined) {
       res.status(400)
-      res.send(JSON.stringify({ message: 'all input required' }))
+      res.send(JSON.stringify({ message: 'All input required' }))
       return
     }
 
     let oldUser = await user.findOne({ username })
-    if (oldUser !== undefined) {
+    if (oldUser !== undefined && oldUser !== null) {
       res.status(409).json({ message: 'Username exists!' })
       return
     }
 
     oldUser = await user.findOne({ email })
-    if (oldUser != null) {
+    if (oldUser !== undefined && oldUser !== null) {
       res.status(409).json({ message: 'Email exists!' })
       return
     }
@@ -37,8 +36,7 @@ const register = async (req: Request, res: Response): Promise<void> => {
       })
 
       const token = Createduser.generateAuthToken()
-      if (Createduser !== undefined) {
-        console.log('Created the Data')
+      if (Createduser !== undefined && Createduser !== null) {
         res.status(201)
           .cookie('jwt', token, {
             maxAge: 900000,

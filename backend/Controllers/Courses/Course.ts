@@ -4,7 +4,6 @@ import User from '../../models/User'
 
 const CourseDetails = async (req: Request, res: Response): Promise<void> => {
   try {
-    console.log(req.headers)
     if (req.headers.id === undefined) {
       res.status(500).json({ msg: 'Id not present in header' })
       return
