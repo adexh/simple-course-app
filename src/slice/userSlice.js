@@ -6,7 +6,6 @@ export const loginUser = createAsyncThunk(
   'user/loginUser',
   async(userCredentials) => {
     const result = await loginService(userCredentials);
-    console.log("from slice",result);
     return result;
   }
 )

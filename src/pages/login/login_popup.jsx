@@ -102,7 +102,7 @@ export default function Loginpop() {
             padding:'10px',
             borderRadius:'5px'
           }}>
-            Incorrect Email/Passowrd !
+            {error}
           </Typography> }
         </DialogContent>
         <DialogActions>
