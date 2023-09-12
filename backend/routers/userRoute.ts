@@ -1,4 +1,4 @@
-import express, { type RequestHandler, Request, Response } from 'express'
+import express, { type RequestHandler, type Request, type Response } from 'express'
 import auth from '../middlewares/userAuth'
 
 import Register from '../Controllers/Users/Register'
