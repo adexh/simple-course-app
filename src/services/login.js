@@ -11,5 +11,9 @@ export const loginService = async(userCredentials) => {
       'password' : userCredentials.password
     }
   })
+  if(request.status !== 200){
+    const data = await request.json();
+    throw new Error(data.message);
+  }
   return request.json();
 }
